@@ -9,6 +9,7 @@ using namespace std;
 
 Mat pic;
 Mat pic_col;
+Mat pic_tmp;
 
 SharedMemory<int> shMem("CoordinateOfMap");
 
@@ -26,12 +27,13 @@ void onMouse(int event, int x, int y, int flag, void* )
 		xy[1] = y;
 
 		shMem.setShMemData(1);
-		shMem.setShMemData(x, 1);
-		shMem.setShMemData(y, 2);
+		shMem.setShMemData(x * 5, 1);
+		shMem.setShMemData(y * 5, 2);
 
-		pic_col.data[y * pic_col.step + x * pic_col.elemSize()] = 0;
-		pic_col.data[y * pic_col.step + x * pic_col.elemSize() + 1 ] = 0;
-		pic_col.data[y * pic_col.step + x * pic_col.elemSize() + 2 ] = 255;
+		pic_tmp = pic_col.clone();
+		pic_tmp.at<Vec3b>(xy[1], xy[0]) = Vec3b(150, 50, 200);
+		circle(pic_tmp, cv::Point(xy[0], xy[1]), 4, cv::Scalar(150, 50, 200), 2);
+		imshow("show", pic_tmp);
 
 		break;
 	case cv::EVENT_RBUTTONDOWN:
@@ -54,25 +56,23 @@ void onMouse(int event, int x, int y, int flag, void* )
 
 }
 
+void imshow( string& name , Mat& mat , Size size )
+{
+	Mat showmat;
+	resize(mat, showmat, size);
+	imshow(name, showmat);
+}
+
 
 void main(int argc, char* argv[])
 {
-	string str;
+	pic = imread(argv[1] , 0);
 
-	//pic = imread("C:\\Users\\user\\Documents\\Visual Studio 2013\\Projects\\HJ_MakeRoute\\Debug\\0_0_3.jpg");
-
-	cout << argc << endl;
-	for (int i = 0; i < argc; i++)	cout << argv[i] << endl;
-	for (int i = 1; i < argc; i++)
-	{
-		str += argv[i];
-		str += " ";
-	}
-	cout << str << endl;
-	pic = imread(str , 0);
+	resize(pic, pic, Size(1000, 1000));
 
 	pic_col = Mat(pic.rows, pic.cols, CV_8UC3);
 	cvtColor(pic, pic_col, CV_GRAY2BGR);
+	pic_tmp = pic_col.clone();
 
 	namedWindow("show", 1 );
 
@@ -82,8 +82,9 @@ void main(int argc, char* argv[])
 
 	int key;
 	while (true){
-		key = waitKey(10);
+		key = waitKey(5);
 		if (key == 's'){//•Û‘¶
+			string str;
 			cout << "s" << endl;
 			cout << "•Û‘¶–¼=>";
 			getline(cin, str);
@@ -94,20 +95,16 @@ void main(int argc, char* argv[])
 		{
 			break;
 		}
-		if (shMem.getShMemData(3) != 0)
+		//“_‚ªŠm’è‚µ‚½‚Æ‚«
+		if (shMem.getShMemData(3) != 0 )
 		{
-			for (int height = 0; height < pic_col.rows; height++){
-				for (int width = 0; width < pic_col.cols; width++){
-					Vec3b bgr = pic_col.at<Vec3b>(height, width);
-					if (bgr[0] == 0 && bgr[1] == 0 && bgr[2] == 255)
-						pic_col.at<Vec3b>(height, width) = Vec3b(0,0,0);
-				}
-			}
-			pic_col.at<Vec3b>(xy[1], xy[0]) = Vec3b(0, 255, 0);
-			circle(pic_col , cv::Point(xy[0], xy[1]), 8, cv::Scalar(0, 255, 0), 2);
+			pic_col.at<Vec3b>(xy[1], xy[0]) = Vec3b(0, 200, 0);
+			circle(pic_col, cv::Point(xy[0], xy[1]), 6, cv::Scalar(0, 255, 0), 2);
+			imshow("show", pic_col);
+
 			shMem.setShMemData(0, 3);
 		}
-		imshow("show", pic_col);
+		//imshow("show", pic_col);
 	}
 
 

@@ -61,7 +61,7 @@ namespace HJ_MakeRoute
 
         private void confirmBtn_Click(object sender, EventArgs e)
         {
-            String str = String.Format("{0} {1} {2} {3} \r\n", x_val.Text, y_val.Text, speed, accuracy);
+            String str = String.Format("{0}, {1}, {2}, {3}, \r\n", x_val.Text, y_val.Text, speed, accuracy);
             routeTxt.Text += str;
 
             shMem.setShMemData(1, 3);
@@ -70,7 +70,7 @@ namespace HJ_MakeRoute
         private void insertBtn_Click(object sender, EventArgs e)
         {
             int pos = routeTxt.SelectionStart;
-            String str = String.Format("{0} {1} {2} {3}", x_val.Text, y_val.Text, speed, accuracy);
+            String str = String.Format("{0}, {1}, {2}, {3},", x_val.Text, y_val.Text, speed, accuracy);
 
             routeTxt.Text = routeTxt.Text.Insert(pos, str);
 
@@ -94,7 +94,7 @@ namespace HJ_MakeRoute
             Process myProcess = new Process();
             //myProcess.StartInfo.FileName = "C:\\Users\\user\\Documents\\Visual Studio 2013\\Projects\\HJ_MakeRoute\\Debug\\MakeRoutepp.exe";
             myProcess.StartInfo.FileName = "../../../Debug\\MakeRoutepp.exe";
-            myProcess.StartInfo.Arguments = newRouteDlog.FileName;
+            myProcess.StartInfo.Arguments = "\"" + newRouteDlog.FileName + "\"";
             myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
             myProcess.Start();
         }

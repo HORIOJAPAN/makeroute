@@ -131,7 +131,7 @@
             this.routeTxt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.routeTxt.Size = new System.Drawing.Size(405, 620);
             this.routeTxt.TabIndex = 12;
-            this.routeTxt.Text = "X  Y  S  A  etc\r\n";
+            this.routeTxt.Text = "X, Y, S, A, etc\r\n";
             // 
             // speed1
             // 
