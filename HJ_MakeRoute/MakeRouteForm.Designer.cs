@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MakeRouteForm));
             this.coord_x = new System.Windows.Forms.Label();
             this.x_val = new System.Windows.Forms.Label();
             this.y_val = new System.Windows.Forms.Label();
@@ -125,13 +126,13 @@
             this.routeTxt.BackColor = System.Drawing.SystemColors.InfoText;
             this.routeTxt.Font = new System.Drawing.Font("MS UI Gothic", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.routeTxt.ForeColor = System.Drawing.Color.Lime;
-            this.routeTxt.Location = new System.Drawing.Point(599, 12);
+            this.routeTxt.Location = new System.Drawing.Point(599, 40);
             this.routeTxt.Multiline = true;
             this.routeTxt.Name = "routeTxt";
             this.routeTxt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.routeTxt.Size = new System.Drawing.Size(405, 620);
+            this.routeTxt.Size = new System.Drawing.Size(405, 592);
             this.routeTxt.TabIndex = 12;
-            this.routeTxt.Text = "X, Y, S, A, etc\r\n";
+            this.routeTxt.Text = "X, Y, S, A, etc,\r\n";
             // 
             // speed1
             // 
@@ -378,6 +379,8 @@
             this.Controls.Add(this.x_val);
             this.Controls.Add(this.coord_x);
             this.Controls.Add(this.label4);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MakeRouteForm";
             this.Text = "MakeRouteForm";
             this.Activated += new System.EventHandler(this.MakeRouteForm_Activated);

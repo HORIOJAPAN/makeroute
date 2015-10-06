@@ -39,7 +39,7 @@ namespace HJ_MakeRoute
             mmf.Dispose();
         }
 
-        public Int32 getShMemData(int offset = 0)
+        public virtual Int32 getShMemData(int offset)
         {
             using (MemoryMappedViewStream stream = mmf.CreateViewStream())
             {
@@ -48,7 +48,7 @@ namespace HJ_MakeRoute
                 return reader.ReadInt32();
             }
         }
-        public void setShMemData(Int32 data, int offset = 0)
+        public virtual void setShMemData(Int32 data, int offset)
         {
             using (MemoryMappedViewStream stream = mmf.CreateViewStream())
             {
