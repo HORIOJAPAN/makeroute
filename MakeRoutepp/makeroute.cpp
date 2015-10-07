@@ -36,14 +36,6 @@ void imshowResize(string& name, Mat& mat, Size size)
 	imshow(name, showmat);
 }
 
-void writeCircleANDLine(Mat& dstpic, Point XY, Point& preXY, Scalar circleCol = Scalar(0, 255, 0), Scalar lineCol = Scalar(0, 0, 200))
-{
-	dstpic.at<Vec3b>(XY.y, XY.x) = Vec3b(0, 255, 0);
-	circle(dstpic, XY, 10, circleCol, 3);
-	if (prePoint.x > 0 && prePoint.y > 0) line(dstpic, prePoint, XY, lineCol, 3, 4);
-
-}
-
 // 経路情報を読み込み直して画像に反映する
 void reloadRoute(string path)
 {
@@ -84,11 +76,15 @@ void reloadRoute(string path)
 		}
 
 		//取得した[x,y]を画像に反映
-		writeCircleANDLine(pic_tmp, Point(x_val, y_val), prePoint);
+		pic_tmp.at<Vec3b>(y_val, x_val ) = Vec3b(0, 255, 0);
+		circle(pic_tmp, cv::Point(x_val, y_val), 10, cv::Scalar(0, 255, 0), 3);
+		if (prePoint.x > 0 && prePoint.y > 0) line(pic_tmp, prePoint, Point(x_val, y_val), cv::Scalar(0, 0, 200), 3, 4);
+
 		prePoint = Point(x_val, y_val);
 	}
 	pic_col = pic_tmp.clone();
 	rectangle(pic_tmp, zoomPoint, Point(zoomPoint.x + zoomSize.width, zoomPoint.y + zoomSize.height), cv::Scalar(0, 0, 200), 5, 4);
+
 	imshowResize(string("Origin"), pic_tmp, Size(pic_tmp.cols / reductionRate.width, pic_tmp.rows / reductionRate.height));
 
 	// zoom画像に点を描画
@@ -105,8 +101,6 @@ void reloadRoute(string path)
 void coodClick(int event, int x, int y, int flag, void* )
 {
 
-	Point prePoint = ::prePoint;
-
 	// マウスイベントを取得
 	switch (event) {
 	case cv::EVENT_MOUSEMOVE:
@@ -116,7 +110,6 @@ void coodClick(int event, int x, int y, int flag, void* )
 		xy[0] = x;
 		xy[1] = y;
 
-
 		// 座標を共有メモリに保存
 		shMem.setShMemData(true, ISCOODDECISION);
 		shMem.setShMemData(x + zoomPoint.x, COOD_X);
@@ -124,11 +117,8 @@ void coodClick(int event, int x, int y, int flag, void* )
 
 		// 座標に点を打つ(確定ではないので一時画像に挿入して表示)
 		pic_tmp = pic_zoom.clone();
-		//pic_tmp.at<Vec3b>(xy[1], xy[0]) = Vec3b(150, 50, 200);
-		//circle(pic_tmp, Point(xy[0], xy[1]), 4, Scalar(150, 50, 200), 2);
-
-		writeCircleANDLine(pic_tmp, Point(xy[0], xy[1]), prePoint, Scalar(150, 50, 200));
-
+		pic_tmp.at<Vec3b>(xy[1], xy[0]) = Vec3b(150, 50, 200);
+		circle(pic_tmp, Point(xy[0], xy[1]), 4, Scalar(150, 50, 200), 2);
 		imshow("zoom", pic_tmp);
 
 		break;
