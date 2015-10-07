@@ -107,7 +107,7 @@ namespace HJ_MakeRoute
 
             routeTxt.Text = routeTxt.Text.Insert(pos, str);
 
-            // いったん保存して挿入した内容をcppに知らせる
+            // いったん保存して挿入したことをcppに知らせる
             using (StreamWriter w = new StreamWriter(newRouteDlog.FileName + ".tmp"))
             {
                 w.Write(routeTxt.Text);
